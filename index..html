@@ -534,7 +534,6 @@
             opacity: 1;
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -773,94 +772,73 @@
 
     <div class="toast" id="toast">Berhasil!</div>
 
-    <script>
-        function showPayment(method) {
-            const modals = {
-                'dana': 'danaModal',
-                'seabank': 'seabankModal',
-                'qris': 'qrisModal',
-                'gopay': 'gopayModal'
-            };
-            
-            document.getElementById(modals[method]).classList.add('active');
-        }
+<script>
+    function showPayment(method) {
+        const modals = {
+            'dana': 'danaModal',
+            'seabank': 'seabankModal',
+            'qris': 'qrisModal',
+            'gopay': 'gopayModal'
+        };
+        
+        document.getElementById(modals[method]).classList.add('active');
+    }
 
-        function closeModal() {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => modal.classList.remove('active'));
-        }
+    function closeModal() {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => modal.classList.remove('active'));
+    }
 
-        function copyText(elementId) {
-            const text = document.getElementById(elementId).textContent;
-            
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(text).then(() => {
-                    showToast('✅ Nomor berhasil disalin!');
-                });
-            } else {
-                const input = document.createElement('input');
-                input.value = text;
-                document.body.appendChild(input);
-                input.select();
-                document.execCommand('copy');
-                document.body.removeChild(input);
+    function copyText(elementId) {
+        const text = document.getElementById(elementId).textContent;
+        
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(text).then(() => {
                 showToast('✅ Nomor berhasil disalin!');
-            }
-        }
-
-        function saveQRIS() {
-            const qrisImage = document.getElementById('qrisImage');
-            
-            if (qrisImage && qrisImage.src && !qrisImage.src.includes('data:')) {
-                const link = document.createElement('a');
-                link.href = qrisImage.src;
-                link.download = 'QRIS_Taaronnn7Store.jpg';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                showToast('✅ QR Code berhasil disimpan!');
-            } else {
-                try {
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    canvas.width = qrisImage.naturalWidth || 280;
-                    canvas.height = qrisImage.naturalHeight || 280;
-                    ctx.drawImage(qrisImage, 0, 0);
-                    
-                    canvas.toBlob(function(blob) {
-                        const url = URL.createObjectURL(blob);
-                        const link = document.createElement('a');
-                        link.href = url;
-                        link.download = 'QRIS_Taaronnn7Store.jpg';
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                        URL.revokeObjectURL(url);
-                        showToast('✅ QR Code berhasil disimpan!');
-                    });
-                } catch (e) {
-                    showToast('❌ Gagal menyimpan QR Code. Silakan screenshot.');
-                }
-            }
-        }
-
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 2500);
-        }
-
-        // Close modal when clicking outside
-        document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeModal();
-                }
             });
-        });
-    </script>
+        } else {
+            const input = document.createElement('input');
+            input.value = text;
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('copy');
+            document.body.removeChild(input);
+            showToast('✅ Nomor berhasil disalin!');
+        }
+    }
+
+    function saveQRIS() {
+        const qrisImage = document.getElementById('qrisImage');
+        
+        if (!qrisImage) {
+            showToast("❌ QRIS tidak ditemukan!");
+            return;
+        }
+
+        if (!qrisImage.src) {
+            showToast("❌ Gambar QRIS tidak valid!");
+            return;
+        }
+
+        const link = document.createElement('a');
+        link.href = qrisImage.src;
+        link.download = 'QRIS_Taaronnn7Store.jpg';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        showToast("✅ QR berhasil disimpan!");
+    }
+
+    function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.innerText = message;
+        toast.classList.add("show");
+
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 2000);
+    }
+</script>
 </body>
 </html>
