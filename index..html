@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taaronnn7 Store - Payment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            padding: 0;
+            padding-bottom: 80px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 140, 0, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 165, 0, 0.15) 0%, transparent 50%);
+            animation: rotate 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 25px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 140, 0, 0.2), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0%, 100% { left: -100%; }
+            50% { left: 100%; }
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FF8C00 0%, #FFD700 50%, #FF8C00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 30px rgba(255, 140, 0, 0.5);
+            position: relative;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .main-content {
+            background: transparent;
+            padding: 25px 20px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 20px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '💳';
+            font-size: 24px;
+        }
+
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .payment-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .payment-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 140, 0, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .payment-card:hover::before {
+            left: 100%;
+        }
+
+        .payment-card:active {
+            transform: scale(0.96);
+        }
+
+        .payment-card:hover {
+            background: rgba(255, 140, 0, 0.15);
+            border-color: rgba(255, 140, 0, 0.5);
+            box-shadow: 0 8px 32px rgba(255, 140, 0, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .payment-icon {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .payment-card:nth-child(1) .payment-icon { animation-delay: 0s; }
+        .payment-card:nth-child(2) .payment-icon { animation-delay: 0.2s; }
+        .payment-card:nth-child(3) .payment-icon { animation-delay: 0.4s; }
+        .payment-card:nth-child(4) .payment-icon { animation-delay: 0.6s; }
+
+        .payment-icon img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .payment-details {
+            flex: 1;
+            text-align: left;
+        }
+
+        .payment-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .payment-info {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+
+        .arrow {
+            color: #FF8C00;
+            font-size: 28px;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+
+        .payment-card:hover .arrow {
+            transform: translateX(5px);
+        }
+
+        .footer {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 18px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .security-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 13px;
+            font-weight: 600;
+            background: rgba(255, 140, 0, 0.2);
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 140, 0, 0.3);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 30px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .payment-icon-large {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .payment-icon-large img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+        }
+
+        .modal-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .modal-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .qr-placeholder {
+            width: 280px;
+            height: 280px;
+            margin: 0 auto 20px;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid #FF8C00;
+            box-shadow: 0 10px 40px rgba(255, 140, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .qr-placeholder::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 140, 0, 0.1), transparent);
+            animation: qrShine 3s linear infinite;
+        }
+
+        @keyframes qrShine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .qr-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 17px;
+        }
+
+        .save-qr-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+            transition: all 0.3s;
+        }
+
+        .save-qr-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(76, 175, 80, 0.5);
+        }
+
+        .save-qr-btn:active {
+            transform: scale(0.97);
+        }
+
+        .account-info {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-row:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+        }
+
+        .info-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, #FF8C00 0%, #FFA500 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+        }
+
+        .copy-btn:active {
+            transform: scale(0.95);
+        }
+
+        .modal-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #FF8C00 0%, #FFA500 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 8px 20px rgba(255, 140, 0, 0.4);
+            transition: all 0.3s;
+        }
+
+        .modal-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(255, 140, 0, 0.5);
+        }
+
+        .modal-button:active {
+            transform: scale(0.97);
+        }
+
+        .instructions {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: left;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.8;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .instructions strong {
+            color: white;
+            font-size: 16px;
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .instructions li {
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 700;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 2000;
+            box-shadow: 0 8px 30px rgba(76, 175, 80, 0.5);
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 140, 0, 0.5);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 140, 0, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">Taaronnn7 Store</div>
+            <div class="subtitle">Pilih Metode Pembayaran</div>
+        </div>
+
+        <div class="main-content">
+            <div class="section-title">Metode Pembayaran</div>
+            
+            <div class="payment-methods">
+                <div class="payment-card" onclick="showPayment('dana')">
+                    <div class="payment-icon">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" alt="DANA">
+                    </div>
+                    <div class="payment-details">
+                        <div class="payment-name">DANA</div>
+                        <div class="payment-info">Kirim uang ke 082269994742</div>
+                    </div>
+                    <div class="arrow">›</div>
+                </div>
+
+                <div class="payment-card" onclick="showPayment('seabank')">
+                    <div class="payment-icon">
+                        <img src="https://images.seeklogo.com/logo-png/48/1/seabank-logo-png_seeklogo-486271.png" alt="SeaBank">
+                    </div>
+                    <div class="payment-details">
+                        <div class="payment-name">SeaBank</div>
+                        <div class="payment-info">Transfer ke 901734715742</div>
+                    </div>
+                    <div class="arrow">›</div>
+                </div>
+
+                <div class="payment-card" onclick="showPayment('qris')">
+                    <div class="payment-icon">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/QRIS_logo.svg/2560px-QRIS_logo.svg.png" alt="QRIS">
+                    </div>
+                    <div class="payment-details">
+                        <div class="payment-name">QRIS</div>
+                        <div class="payment-info">Scan QR semua e-wallet</div>
+                    </div>
+                    <div class="arrow">›</div>
+                </div>
+
+                <div class="payment-card" onclick="showPayment('gopay')">
+                    <div class="payment-icon">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Gopay_logo.svg" alt="GoPay">
+                    </div>
+                    <div class="payment-details">
+                        <div class="payment-name">GoPay</div>
+                        <div class="payment-info">Kirim ke 082269994742</div>
+                    </div>
+                    <div class="arrow">›</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="security-badge">
+                🔒 Pembayaran Aman & Terpercaya
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal DANA -->
+    <div class="modal" id="danaModal">
+        <div class="modal-content">
+            <div class="payment-icon-large">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" alt="DANA">
+            </div>
+            <div class="modal-title">DANA</div>
+            <div class="modal-subtitle">Transfer ke nomor DANA berikut</div>
+            
+            <div class="account-info">
+                <div class="info-row">
+                    <span class="info-label">Nomor DANA</span>
+                    <div class="info-value">
+                        <span id="danaNumber">082269994742</span>
+                        <button class="copy-btn" onclick="copyText('danaNumber')">Salin</button>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Nama</span>
+                    <div class="info-value">
+                        <span>M. Ihsanuddin Alfarizi</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="instructions">
+                <strong>Cara Bayar:</strong>
+                <ol>
+                    <li>Buka aplikasi DANA</li>
+                    <li>Pilih "Kirim"</li>
+                    <li>Masukkan nomor: <strong>082269994742</strong></li>
+                    <li>Input jumlah bayar</li>
+                    <li>Konfirmasi dengan PIN</li>
+                </ol>
+            </div>
+
+            <button class="modal-button" onclick="closeModal()">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Modal SeaBank -->
+    <div class="modal" id="seabankModal">
+        <div class="modal-content">
+            <div class="payment-icon-large">
+                <img src="https://images.seeklogo.com/logo-png/48/1/seabank-logo-png_seeklogo-486271.png" alt="SeaBank">
+            </div>
+            <div class="modal-title">SeaBank</div>
+            <div class="modal-subtitle">Transfer ke rekening SeaBank</div>
+            
+            <div class="account-info">
+                <div class="info-row">
+                    <span class="info-label">No. Rekening</span>
+                    <div class="info-value">
+                        <span id="seabankNumber">901734715742</span>
+                        <button class="copy-btn" onclick="copyText('seabankNumber')">Salin</button>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Nama</span>
+                    <div class="info-value">
+                        <span>M. Ihsanuddin Alfarizi</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="instructions">
+                <strong>Cara Bayar:</strong>
+                <ol>
+                    <li>Buka aplikasi SeaBank</li>
+                    <li>Pilih "Transfer"</li>
+                    <li>Pilih "Antar Rekening SeaBank"</li>
+                    <li>Masukkan: <strong>901734715742</strong></li>
+                    <li>Input jumlah bayar</li>
+                    <li>Konfirmasi transfer</li>
+                </ol>
+            </div>
+
+            <button class="modal-button" onclick="closeModal()">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Modal QRIS -->
+    <div class="modal" id="qrisModal">
+        <div class="modal-content">
+            <div class="payment-icon-large">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/QRIS_logo.svg/2560px-QRIS_logo.svg.png" alt="QRIS">
+            </div>
+            <div class="modal-title">QRIS</div>
+            <div class="modal-subtitle">Scan QR Code untuk pembayaran</div>
+            
+            <div class="qr-placeholder" id="qrisContainer">
+                <img id="qrisImage" src="https://cdn.discordapp.com/attachments/1098945518056509507/1446521342957715658/WhatsApp_Image_2025-12-05_at_19.22.58_e647a6eb.jpg?ex=6934497b&is=6932f7fb&hm=e5322552c1c9271139e401b1c750ff85ad2ba4e3074376a2499e354f96929535&" alt="QRIS Code" onerror="this.parentElement.innerHTML='<div style=\'font-size: 14px; color: #666; padding: 20px;\'>QR Code QRIS<br>M. Ihsanuddin Alfarizi<br>NMID: ID1025461032076</div>'">
+            </div>
+
+            <button class="save-qr-btn" onclick="saveQRIS()">
+                💾 Simpan QR Code
+            </button>
+
+            <div class="instructions">
+                <strong>Cara Bayar:</strong>
+                <ol>
+                    <li>Buka aplikasi e-wallet kamu (DANA, GoPay, OVO, dll)</li>
+                    <li>Pilih menu "Scan QR" atau "QRIS"</li>
+                    <li>Scan QR Code di atas</li>
+                    <li>Atau simpan QR lalu upload dari galeri</li>
+                    <li>Masukkan nominal bayar</li>
+                    <li>Konfirmasi dengan PIN</li>
+                </ol>
+            </div>
+
+            <button class="modal-button" onclick="closeModal()">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Modal GoPay -->
+    <div class="modal" id="gopayModal">
+        <div class="modal-content">
+            <div class="payment-icon-large">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Gopay_logo.svg" alt="GoPay">
+            </div>
+            <div class="modal-title">GoPay</div>
+            <div class="modal-subtitle">Transfer ke nomor GoPay</div>
+            
+            <div class="account-info">
+                <div class="info-row">
+                    <span class="info-label">Nomor GoPay</span>
+                    <div class="info-value">
+                        <span id="gopayNumber">082269994742</span>
+                        <button class="copy-btn" onclick="copyText('gopayNumber')">Salin</button>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Nama</span>
+                    <div class="info-value">
+                        <span>M. Ihsanuddin Alfarizi</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="instructions">
+                <strong>Cara Bayar:</strong>
+                <ol>
+                    <li>Buka aplikasi Gojek</li>
+                    <li>Pilih "GoPay" lalu "Kirim"</li>
+                    <li>Masukkan nomor: <strong>082269994742</strong></li>
+                    <li>Input jumlah bayar</li>
+                    <li>Konfirmasi dengan PIN</li>
+                </ol>
+            </div>
+
+            <button class="modal-button" onclick="closeModal()">Tutup</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">Berhasil!</div>
+
+    <script>
+        function showPayment(method) {
+            const modals = {
+                'dana': 'danaModal',
+                'seabank': 'seabankModal',
+                'qris': 'qrisModal',
+                'gopay': 'gopayModal'
+            };
+            
+            document.getElementById(modals[method]).classList.add('active');
+        }
+
+        function closeModal() {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => modal.classList.remove('active'));
+        }
+
+        function copyText(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('✅ Nomor berhasil disalin!');
+                });
+            } else {
+                const input = document.createElement('input');
+                input.value = text;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                showToast('✅ Nomor berhasil disalin!');
+            }
+        }
+
+        function saveQRIS() {
+            const qrisImage = document.getElementById('qrisImage');
+            
+            if (qrisImage && qrisImage.src && !qrisImage.src.includes('data:')) {
+                const link = document.createElement('a');
+                link.href = qrisImage.src;
+                link.download = 'QRIS_Taaronnn7Store.jpg';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showToast('✅ QR Code berhasil disimpan!');
+            } else {
+                try {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.width = qrisImage.naturalWidth || 280;
+                    canvas.height = qrisImage.naturalHeight || 280;
+                    ctx.drawImage(qrisImage, 0, 0);
+                    
+                    canvas.toBlob(function(blob) {
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.download = 'QRIS_Taaronnn7Store.jpg';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        URL.revokeObjectURL(url);
+                        showToast('✅ QR Code berhasil disimpan!');
+                    });
+                } catch (e) {
+                    showToast('❌ Gagal menyimpan QR Code. Silakan screenshot.');
+                }
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // Close modal when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
